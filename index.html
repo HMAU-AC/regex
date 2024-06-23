@@ -113,12 +113,14 @@
                 url = url.split('?')[0];
             }
 
-            let regex = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\//g, '\\/');
-            
+            let regex;
             if (matchDomain) {
                 const urlObj = new URL(url);
-                const domain = urlObj.hostname;
-                regex = domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const protocol = urlObj.protocol.replace(':', '\\:');
+                const domain = urlObj.hostname.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                regex = `${protocol}//${domain}`;
+            } else {
+                regex = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\//g, '\\/');
             }
 
             document.getElementById('regexOutput').value = regex;
