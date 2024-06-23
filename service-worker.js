@@ -2,6 +2,7 @@ const CACHE_NAME = 'my-pwa-cache-v1';
 const urlsToCache = [
   '/regex/',
   '/regex/index.html',
+  '/regex/regex.html',
   '/regex/styles.css',
   '/regex/app.js',
   '/regex/theme-color.js',
