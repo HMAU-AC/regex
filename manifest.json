@@ -1,7 +1,7 @@
 {
   "name": "HMAU",
   "short_name": "HMAU-PWA",
-  "start_url": "/regex/index.html",
+  "start_url": "/",
   "display": "browser",
   "background_color": "#ffffff",
   "theme_color": "#000000",
