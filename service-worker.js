@@ -4,6 +4,7 @@ const urlsToCache = [
   '/regex/index.html',
   '/regex/styles.css',
   '/regex/app.js',
+  '/regex/theme-color.js',
   '/regex/manifest.json',
   '/regex/icon-192x192.png',
   '/regex/icon-512x512.png'
