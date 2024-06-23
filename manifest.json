@@ -1,10 +1,10 @@
 {
   "name": "HMAU",
   "short_name": "HMAU-PWA",
-  "start_url": "/regex/",
-  "display": "browser",
+  "start_url": "/regex/index.html",
+  "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#0000ff",
   "icons": [
     {
       "src": "/regex/icons/icon-192x192.png",
