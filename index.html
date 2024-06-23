@@ -49,6 +49,7 @@
             display: block;
             margin: 0 auto 5px;
             font-size: 24px;
+            color: inherit; /* 让图标颜色继承文字颜色 */
         }
     </style>
     <link rel="stylesheet" type="text/css" href="https://hmau-ac.github.io/regex/fonts/icofont.min.css">
@@ -59,22 +60,21 @@
         <a href="#" class="active" onclick="changeTab(event, '首页', 'home.html')"><i class="icofont-duotone icofont-cogs"></i><span>首页</span></a>
         <a href="./regex.html" onclick="changeTab(event, '正则', './regex.html')"><i class="icofont-duotone icofont-compass"></i><span>正则</span></a>
         <a href="#" onclick="changeTab(event, '消息', 'messages.html')"><i class="icofont-duotone icofont-user-notes"></i><span>消息</span></a>
-        <a href="#" onclick="changeTab(event, '通知', 'notifications.html')"><i class="fas fa-bell"></i><span>通知</span></a>
+        <a href="#" onclick="changeTab(event, '通知', 'notifications.html')"><i class="icofont-duotone icofont-bell"></i><span>通知</span></a>
         <a href="#" onclick="changeTab(event, '设置', 'settings.html')"><i class="icofont-duotone icofont-cogs"></i><span>设置</span></a>
     </div>
 
     <script>
         function changeTab(event, tabName, url) {
-    event.preventDefault();
-    document.querySelectorAll('.tabbar a').forEach(a => a.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-    document.getElementById('content').textContent = tabName;
+            event.preventDefault();
+            document.querySelectorAll('.tabbar a').forEach(a => a.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById('content').textContent = tabName;
 
-    if (url) {
-        document.getElementById('content').innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
-    }
-}
-
+            if (url) {
+                document.getElementById('content').innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
+            }
+        }
     </script>
 </body>
 </html>
