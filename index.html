@@ -109,17 +109,15 @@
             const ignoreQueryParams = document.getElementById('ignoreQueryParams').checked;
             const matchDomain = document.getElementById('matchDomain').checked;
 
-            if (ignoreQueryParams) {
-                url = url.split('?')[0];
-            }
-
-            let regex;
             if (matchDomain) {
                 const urlObj = new URL(url);
                 const protocol = urlObj.protocol.replace(':', '\\:');
                 const domain = urlObj.hostname.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                regex = `${protocol}//${domain}`;
+                var regex = `${protocol}//${domain}`;
             } else {
+                if (ignoreQueryParams) {
+                    url = url.split('?')[0];
+                }
                 regex = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\//g, '\\/');
             }
 
