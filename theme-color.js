@@ -21,3 +21,11 @@ if (window.matchMedia) {
 } else {
     applyThemeColor(false);  // 默认使用浅色模式
 }
+
+// 监听应用的可见性变化
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyThemeColor(isDarkMode);
+    }
+});
