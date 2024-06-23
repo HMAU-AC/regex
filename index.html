@@ -1,182 +1,79 @@
-    <!DOCTYPE html>
-    <html lang="zh-CN">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="theme-color" content="#ffffff" id="theme-color">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-        <title>连接正则转换</title>
-        <style>
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                padding: 20px;
-                background-color: #ffffff;
-                color: #333333;
-                transition: background-color 0.3s, color 0.3s;
-            }
-            .container {
-                max-width: 600px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #f9f9f9;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                transition: background-color 0.3s;
-            }
-            input, textarea {
-                width: calc(100% - 20px); /* Adjust width to account for padding */
-                padding: 10px;
-                margin: 10px 0;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                transition: border-color 0.3s;
-            }
-            input:focus, textarea:focus {
-                border-color: #007aff;
-                outline: none;
-            }
-            /* 复制按钮*/
-            .textarea-container {
-    position: relative;
-}
-
-.copy-button {
-    position: absolute;
-    bottom: 20px;
-    right: 5px;
-    padding: 2px 6px;
-    width: 30px;
-    background-color: #007aff;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 6px;
-    transition: background-color 0.3s;
-}
-
-.copy-button:hover {
-    background-color: #005bb5;
-}
-
-.dark-mode .copy-button {
-    background-color: #0a84ff;
-}
-
-.dark-mode .copy-button:hover {
-    background-color: #0066cc;
-}
-/* 复制按钮结束 */
-            button {
-                width: 100%;
-                padding: 10px;
-                background-color: #007aff;
-                color: #ffffff;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
-            button:hover {
-                background-color: #005bb5;
-            }
-            .dark-mode {
-                background-color: #1c1c1e;
-                color: #f0f0f0;
-            }
-            .dark-mode .container {
-                background-color: #2c2c2e;
-            }
-            .dark-mode input, .dark-mode textarea {
-                background-color: #3a3a3c;
-                border-color: #5a5a5c;
-                color: #f0f0f0;
-            }
-            .dark-mode input:focus, .dark-mode textarea:focus {
-                border-color: #0a84ff;
-            }
-            .dark-mode button {
-                background-color: #0a84ff;
-            }
-            .dark-mode button:hover {
-                background-color: #0066cc;
-            }
-            .checkbox-container {
-                display: flex;
-                align-items: center;
-                margin: 10px 0;
-            }
-            .checkbox-container input {
-                width: 16px;
-                height: 16px;
-                margin-right: 8px;
-            }
-            .checkbox-container label {
-                font-size: 14px;
-            }
-        </style> 
-        <link rel="manifest" href="/regex/manifest.json">
-    </head>
-    <body>
-        <div class="container">
-            <h1>正则表达转换连接</h1>
-            <input type="text" id="urlInput" placeholder="输入网址链接">
-            <div class="textarea-container">
-    <textarea id="regexOutput" rows="4" placeholder="正则表达式链接"></textarea>
-    <button class="copy-button" onclick="copyToClipboard()">复制</button>
-</div>
-            <div class="checkbox-container">
-                <input type="checkbox" id="ignoreQueryParams">
-                <label for="ignoreQueryParams">忽略查询参数</label>
-                <input type="checkbox" id="matchDomain" style="margin-left: 20px;">
-                <label for="matchDomain">匹配域名</label>
-            </div>
-           
-            <button onclick="convertToRegex()">转换</button>
-        </div>
-
-     <script>
-        function convertToRegex() {
-            let url = document.getElementById('urlInput').value;
-            const ignoreQueryParams = document.getElementById('ignoreQueryParams').checked;
-            const matchDomain = document.getElementById('matchDomain').checked;
-
-            if (matchDomain) {
-                const urlObj = new URL(url);
-                url = urlObj.origin;
-            } else if (ignoreQueryParams) {
-                url = url.split('?')[0];
-            }
-
-            const regex = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\//g, '\\/');
-            document.getElementById('regexOutput').value = regex;
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>底部导航栏示例</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
-
-        // 检测系统是否为暗模式
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.body.classList.add('dark-mode');
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
         }
+        .tabbar {
+            position: fixed;
+            bottom: 0px; /* 底部 tabbar 向上 6px */
+            width: 100%;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #ddd;
+            height: calc(70px + env(safe-area-inset-bottom)); /* 高度增加 15px */
+        }
+        .tabbar a {
+            flex: 1;
+            text-align: center;
+            padding: 5px 0;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+        .tabbar a:hover {
+            transform: scale(1.1);
+        }
+        .tabbar a.active {
+            color: #000;
+            border-top: 2px solid #000;
+        }
+        .tabbar a i {
+            display: block;
+            margin: 0 auto 5px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content" id="content">首页</div>
+    <div class="tabbar">
+        <a href="#" class="active" onclick="changeTab(event, '首页', 'home.html')"><i class="fas fa-home"></i><span>首页</span></a>
+        <a href="#" onclick="changeTab(event, '正则', 'regex.html')"><i class="fas fa-search"></i><span>正则</span></a>
+        <a href="#" onclick="changeTab(event, '消息', 'messages.html')"><i class="fas fa-envelope"></i><span>消息</span></a>
+        <a href="#" onclick="changeTab(event, '通知', 'notifications.html')"><i class="fas fa-bell"></i><span>通知</span></a>
+        <a href="#" onclick="changeTab(event, '设置', 'settings.html')"><i class="fas fa-cog"></i><span>设置</span></a>
+    </div>
 
-        // 监听系统暗模式变化
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (e.matches) {
-                document.body.classList.add('dark-mode');
-            } else {
-                document.body.classList.remove('dark-mode');
-            }
-        });
-    </script>
     <script>
-    function copyToClipboard() {
-    const regexOutput = document.getElementById('regexOutput');
-    regexOutput.select();
-    document.execCommand('copy');
-    alert('复制成功');
-}
+        function changeTab(event, tabName, url) {
+            event.preventDefault();
+            document.querySelectorAll('.tabbar a').forEach(a => a.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById('content').textContent = tabName;
+
+            if (url) {
+                document.getElementById('content').innerHTML = `<iframe src="" style="width:100%; height:100%; border:none;"></iframe>`;
+            }
+        }
     </script>
-        <script src="/regex/theme-color.js"></script>
-        <script src="/regex/app.js"></script>
-    </body>
-    </html>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
