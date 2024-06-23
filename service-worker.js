@@ -1,6 +1,6 @@
 const CACHE_NAME = 'my-cache-v1';
 const urlsToCache = [
-  '/',
+  '/regex',
   '/index.html',
   '/app.js',
   '/manifest.json',
