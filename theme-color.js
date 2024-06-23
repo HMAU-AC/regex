@@ -9,13 +9,15 @@ function applyThemeColor(isDarkMode) {
     }
 }
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    applyThemeColor(true);
-} else {
-    applyThemeColor(false);
-}
+// 初始模式检测并应用
+if (window.matchMedia) {
+    const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    applyThemeColor(darkModeQuery.matches);
 
-// 监听系统暗模式变化
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    applyThemeColor(e.matches);
-});
+    // 监听系统暗模式变化
+    darkModeQuery.addEventListener('change', e => {
+        applyThemeColor(e.matches);
+    });
+} else {
+    applyThemeColor(false);  // 默认使用浅色模式
+}
