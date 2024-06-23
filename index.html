@@ -73,6 +73,20 @@
                 document.getElementById('content').innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
             }
         }
+        
+// 检测系统是否为暗模式
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark-mode');
+        }
+
+        // 监听系统暗模式变化
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (e.matches) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        });
     </script>
     <script src="/regex/theme-color.js"></script>
     <script src="/regex/app.js"></script>
