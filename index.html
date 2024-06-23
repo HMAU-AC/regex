@@ -37,6 +37,37 @@
                 border-color: #007aff;
                 outline: none;
             }
+            /* 复制按钮*/
+            .textarea-container {
+    position: relative;
+}
+
+.copy-button {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: #007aff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.copy-button:hover {
+    background-color: #005bb5;
+}
+
+.dark-mode .copy-button {
+    background-color: #0a84ff;
+}
+
+.dark-mode .copy-button:hover {
+    background-color: #0066cc;
+}
+/* 复制按钮结束 */
             button {
                 width: 100%;
                 padding: 10px;
@@ -91,7 +122,10 @@
         <div class="container">
             <h1>正则表达转换连接</h1>
             <input type="text" id="urlInput" placeholder="输入网址链接">
-            <textarea id="regexOutput" rows="4" placeholder="正则表达式链接"></textarea>
+            <div class="textarea-container">
+    <textarea id="regexOutput" rows="4" placeholder="正则表达式链接"></textarea>
+    <button class="copy-button" onclick="copyToClipboard()">复制</button>
+</div>
             <div class="checkbox-container">
                 <input type="checkbox" id="ignoreQueryParams">
                 <label for="ignoreQueryParams">忽略查询参数</label>
@@ -132,6 +166,14 @@
                 document.body.classList.remove('dark-mode');
             }
         });
+    </script>
+    <script>
+    function copyToClipboard() {
+    const regexOutput = document.getElementById('regexOutput');
+    regexOutput.select();
+    document.execCommand('copy');
+    alert('复制成功');
+}
     </script>
         <script src="/regex/theme-color.js"></script>
         <script src="/regex/app.js"></script>
