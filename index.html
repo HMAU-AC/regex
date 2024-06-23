@@ -96,6 +96,10 @@
             <input type="checkbox" id="ignoreQueryParams">
             <label for="ignoreQueryParams">忽略查询参数</label>
         </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="matchDomain">
+            <label for="matchDomain">匹配域名</label>
+        </div>
         <button onclick="convertToRegex()">转换</button>
     </div>
 
@@ -103,28 +107,22 @@
         function convertToRegex() {
             let url = document.getElementById('urlInput').value;
             const ignoreQueryParams = document.getElementById('ignoreQueryParams').checked;
+            const matchDomain = document.getElementById('matchDomain').checked;
 
             if (ignoreQueryParams) {
                 url = url.split('?')[0];
             }
 
-            const regex = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\//g, '\\/');
+            let regex = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\//g, '\\/');
+            
+            if (matchDomain) {
+                const urlObj = new URL(url);
+                const domain = urlObj.hostname;
+                regex = domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+
             document.getElementById('regexOutput').value = regex;
         }
-
-        // 检测系统是否为暗模式
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.body.classList.add('dark-mode');
-        }
-
-        // 监听系统暗模式变化
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (e.matches) {
-                document.body.classList.add('dark-mode');
-            } else {
-                document.body.classList.remove('dark-mode');
-            }
-        });
     </script>
     <script src="/regex/theme-color.js"></script>
     <script src="/regex/app.js"></script>
