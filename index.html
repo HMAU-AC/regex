@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff" id="theme-color">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>底部导航栏示例</title>
     <style>
         body {
@@ -15,6 +15,8 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            background-color: #ffffff;
+            color: #000000;
         }
         .content {
             flex: 1;
@@ -25,13 +27,13 @@
         }
         .tabbar {
             position: fixed;
-            bottom: 0px; /* 底部 tabbar 向上 6px */
+            bottom: 0px;
             width: 100%;
             background-color: #f8f8f8;
             display: flex;
             justify-content: space-around;
             border-top: 1px solid #ddd;
-            height: calc(70px + env(safe-area-inset-bottom)); /* 高度增加 15px */
+            height: calc(70px + env(safe-area-inset-bottom));
         }
         .tabbar a {
             flex: 1;
@@ -40,21 +42,31 @@
             text-decoration: none;
             color: #333;
             font-size: 16px;
-            transition: transform 0.3s;
-        }
-        .tabbar a:hover {
-            transform: scale(1.1);
         }
         .tabbar a.active {
-            color: #000;
             border-top: 2px solid #000;
+            transform: translateY(-3px);
+        }
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .tabbar.dark-mode {
+            background-color: #333333;
+            border-top-color: #444444;
+        }
+        .tabbar a.dark-mode {
+            color: #bbbbbb;
+        }
+        .tabbar a.dark-mode.active {
+            border-top-color: #ffffff;
         }
     </style>
     <link rel="manifest" href="/regex/manifest.json">
 </head>
 <body>
     <div class="content" id="content">首页</div>
-    <div class="tabbar">
+    <div class="tabbar" id="tabbar">
         <a href="#" class="active" onclick="changeTab(event, '首页', 'home.html')"><span>首页</span></a>
         <a href="./regex.html" onclick="changeTab(event, '正则', './regex.html')"><span>正则</span></a>
         <a href="#" onclick="changeTab(event, '消息', 'messages.html')"><span>消息</span></a>
@@ -73,18 +85,24 @@
                 document.getElementById('content').innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
             }
         }
-        
-// 检测系统是否为暗模式
+
+        // 检测系统是否为暗模式
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.body.classList.add('dark-mode');
+            document.getElementById('tabbar').classList.add('dark-mode');
+            document.querySelectorAll('.tabbar a').forEach(a => a.classList.add('dark-mode'));
         }
 
         // 监听系统暗模式变化
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
             if (e.matches) {
                 document.body.classList.add('dark-mode');
+                document.getElementById('tabbar').classList.add('dark-mode');
+                document.querySelectorAll('.tabbar a').forEach(a => a.classList.add('dark-mode'));
             } else {
                 document.body.classList.remove('dark-mode');
+                document.getElementById('tabbar').classList.remove('dark-mode');
+                document.querySelectorAll('.tabbar a').forEach(a => a.classList.remove('dark-mode'));
             }
         });
     </script>
