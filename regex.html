@@ -165,7 +165,7 @@
                 document.body.classList.add('dark-mode');
             } else {
                 document.body.classList.remove('dark-mode');
-            }
+
         });
     </script>
     <script>
@@ -173,7 +173,13 @@
     const regexOutput = document.getElementById('regexOutput');
     regexOutput.select();
     document.execCommand('copy');
-    alert('复制成功');
+
+    const copyButton = document.querySelector('.copy-button');
+    copyButton.textContent = '成功';
+
+    setTimeout(() => {
+        copyButton.textContent = '复制';
+    }, 1000);
 }
     </script>
         <script src="/regex/theme-color.js"></script>
