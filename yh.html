@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优化压缩页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .content {
+            padding: 10px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .file-input {
+            width: calc(100% - 5px); /* 添加边距调整 */
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            box-sizing: border-box;
+        }
+        .compress-btn, .download-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .compress-btn:hover, .download-btn:hover {
+            background-color: #45a049;
+        }
+        .block {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+        .output {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8e8e8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 140px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>文件优化压缩</h1>
+</div>
+<div class="content">
+    <div class="block">
+        <div class="section">
+            <div class="section-title">CSS 优化压缩</div>
+            <input type="file" class="file-input" id="cssFileInput">
+            <textarea class="file-input" id="cssInput" rows="6" placeholder="在此输入CSS代码"></textarea>
+            <button class="compress-btn" onclick="optimizeCSS()">优化压缩</button>
+            <h3 id="cssOutputTitle" style="display:none;">优化后的CSS:</h3>
+            <div class="output" id="cssOutput" style="display:none;">
+                <pre id="cssResult"></pre>
+            </div>
+            <button class="download-btn" id="cssDownload" style="display:none;" onclick="downloadFile('css')">下载压缩后的CSS</button>
+        </div>
+    </div>
+    <div class="block">
+        <div class="section">
+            <div class="section-title">JS 优化压缩</div>
+            <input type="file" class="file-input" id="jsFileInput">
+            <textarea class="file-input" id="jsInput" rows="6" placeholder="在此输入JS代码"></textarea>
+            <button class="compress-btn" onclick="optimizeJS()">优化压缩</button>
+            <h3 id="jsOutputTitle" style="display:none;">优化后的JS:</h3>
+            <div class="output" id="jsOutput" style="display:none;">
+                <pre id="jsResult"></pre>
+            </div>
+            <button class="download-btn" id="jsDownload" style="display:none;" onclick="downloadFile('js')">下载压缩后的JS</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('cssFileInput').addEventListener('change', handleFileSelect.bind(null, 'css'));
+    document.getElementById('jsFileInput').addEventListener('change', handleFileSelect.bind(null, 'js'));
+
+    function handleFileSelect(type, event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(type + 'Input').value = e.target.result;
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    function optimizeCSS() {
+        const cssInput = document.getElementById('cssInput').value;
+        const optimizedCSS = cssInput.replace(/\/\*[\s\S]*?\*\/|[\r\n]/g, '').replace(/\s+/g, ' ').trim();
+        document.getElementById('cssResult').textContent = optimizedCSS;
+        document.getElementById('cssOutput').style.display = 'block';
+        document.getElementById('cssOutputTitle').style.display = 'block';
+        document.getElementById('cssDownload').style.display = 'block';
+    }
+
+    function optimizeJS() {
+        const jsInput = document.getElementById('jsInput').value;
+        const optimizedJS = jsInput.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*|[\r\n]/g, '').replace(/\s+/g, ' ').trim();
+        document.getElementById('jsResult').textContent = optimizedJS;
+        document.getElementById('jsOutput').style.display = 'block';
+        document.getElementById('jsOutputTitle').style.display = 'block';
+        document.getElementById('jsDownload').style.display = 'block';
+    }
+
+    function downloadFile(type) {
+        const content = document.getElementById(type + 'Result').textContent;
+        const blob = new Blob([content], { type: type === 'css' ? 'text/css' : 'application/javascript' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = type === 'css' ? 'optimized.css' : 'optimized.js';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+</script>
+
+</body>
+</html>
