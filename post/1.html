@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff" id="theme-color">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>连接正则转换</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .content {
+            padding: 10px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .file-input {
+            width: calc(100% - 5px); /* 添加边距调整 */
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            box-sizing: border-box;
+        }
+        .compress-btn, .download-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .compress-btn:hover, .download-btn:hover {
+            background-color: #45a049;
+        }
+        .block {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+        .output {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8e8e8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 140px;
+            overflow-y: auto;
+        }
+        .textarea-container {
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            bottom: 14px;
+            right: 9px;
+            width: 40px; /* 放大 1.5 倍 */
+            height: 16px; /* 放大 1.5 倍 */
+            padding: 3px 3px; /* 放大 1.5 倍 */
+            background-color: #007aff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 9px; /* 放大 1.5 倍 */
+            transition: background-color 0.3s;
+        }
+        .copy-button:hover {
+            background-color: #005bb5;
+        }
+    </style>
+    <link rel="manifest" href="/regex/manifest.json">
+</head>
+<body>
+    <div class="content">
+        <div class="block">
+            <div class="section">
+                <div class="section-title">正则表达转换连接</div>
+                <input type="text" class="file-input" id="urlInput" placeholder="输入网址链接">
+                <div class="textarea-container">
+                    <textarea class="file-input" id="regexOutput" rows="4" placeholder="正则表达式链接"></textarea>
+                    <button class="copy-button" onclick="copyToClipboard()">复制</button>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="ignoreQueryParams">
+                    <label for="ignoreQueryParams">忽略查询参数</label>
+                    <input type="checkbox" id="matchDomain" style="margin-left: 20px;">
+                    <label for="matchDomain">匹配域名</label>
+                </div>
+                <button class="compress-btn" onclick="convertToRegex()">转换</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function convertToRegex() {
+            let url = document.getElementById('urlInput').value;
+            const ignoreQueryParams = document.getElementById('ignoreQueryParams').checked;
+            const matchDomain = document.getElementById('matchDomain').checked;
+
+            if (matchDomain) {
+                const urlObj = new URL(url);
+                url = urlObj.origin;
+            } else if (ignoreQueryParams) {
+                url = url.split('?')[0];
+            }
+
+            const regex = url.replace(/[.*+?^${}()|[\]\]/g, '\$&').replace(/\//g, '\/');
+            document.getElementById('regexOutput').value = regex;
+        }
+
+        // 检测系统是否为暗模式
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark-mode');
+        }
+
+        // 监听系统暗模式变化
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (e.matches) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        });
+    </script>
+    <script>
+        function copyToClipboard() {
+            const regexOutput = document.getElementById('regexOutput');
+            regexOutput.select();
+            document.execCommand('copy');
+
+            const copyButton = document.querySelector('.copy-button');
+            copyButton.textContent = '成功';
+
+            setTimeout(() => {
+                copyButton.textContent = '复制';
+            }, 1000);
+        }
+    </script>
+    <script src="/regex/theme-color.js"></script>
+    <script src="/regex/app.js"></script>
+</body>
+</html>
