@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#ffffff" id="theme-color">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>连接正则转换</title>
     <style>
         body {
@@ -92,7 +88,6 @@
             background-color: #005bb5;
         }
     </style>
-    <link rel="manifest" href="/regex/manifest.json">
 </head>
 <body>
     <div class="content">
@@ -121,32 +116,21 @@
             const ignoreQueryParams = document.getElementById('ignoreQueryParams').checked;
             const matchDomain = document.getElementById('matchDomain').checked;
 
-            if (matchDomain) {
-                const urlObj = new URL(url);
-                url = urlObj.origin;
-            } else if (ignoreQueryParams) {
-                url = url.split('?')[0];
-            }
+            try {
+                if (matchDomain) {
+                    const urlObj = new URL(url);
+                    url = urlObj.origin;
+                } else if (ignoreQueryParams) {
+                    url = url.split('?')[0];
+                }
 
-            const regex = url.replace(/[.*+?^${}()|[\]\]/g, '\$&').replace(/\//g, '\/');
-            document.getElementById('regexOutput').value = regex;
+                const regex = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\//g, '\\/');
+                document.getElementById('regexOutput').value = regex;
+            } catch (e) {
+                alert('请输入有效的网址链接');
+            }
         }
 
-        // 检测系统是否为暗模式
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.body.classList.add('dark-mode');
-        }
-
-        // 监听系统暗模式变化
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (e.matches) {
-                document.body.classList.add('dark-mode');
-            } else {
-                document.body.classList.remove('dark-mode');
-            }
-        });
-    </script>
-    <script>
         function copyToClipboard() {
             const regexOutput = document.getElementById('regexOutput');
             regexOutput.select();
@@ -160,7 +144,5 @@
             }, 1000);
         }
     </script>
-    <script src="/regex/theme-color.js"></script>
-    <script src="/regex/app.js"></script>
 </body>
 </html>
