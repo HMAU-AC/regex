@@ -97,11 +97,25 @@
             <button class="download-btn" id="jsDownload" style="display:none;" onclick="downloadFile('js')">下载压缩后的JS</button>
         </div>
     </div>
+    <div class="block">
+        <div class="section">
+            <div class="section-title">HTML 优化压缩</div>
+            <input type="file" class="file-input" id="htmlFileInput">
+            <textarea class="file-input" id="htmlInput" rows="6" placeholder="在此输入HTML代码"></textarea>
+            <button class="compress-btn" onclick="optimizeHTML()">优化压缩</button>
+            <h3 id="htmlOutputTitle" style="display:none;">优化后的HTML:</h3>
+            <div class="output" id="htmlOutput" style="display:none;">
+                <pre id="htmlResult"></pre>
+            </div>
+            <button class="download-btn" id="htmlDownload" style="display:none;" onclick="downloadFile('html')">下载压缩后的HTML</button>
+        </div>
+    </div>
 </div>
 
 <script>
     document.getElementById('cssFileInput').addEventListener('change', handleFileSelect.bind(null, 'css'));
     document.getElementById('jsFileInput').addEventListener('change', handleFileSelect.bind(null, 'js'));
+    document.getElementById('htmlFileInput').addEventListener('change', handleFileSelect.bind(null, 'html'));
 
     function handleFileSelect(type, event) {
         const file = event.target.files[0];
@@ -132,14 +146,23 @@
         document.getElementById('jsDownload').style.display = 'block';
     }
 
+    function optimizeHTML() {
+        const htmlInput = document.getElementById('htmlInput').value;
+        const optimizedHTML = htmlInput.replace(/<!--[\s\S]*?-->|[\r\n]/g, '').replace(/\s+/g, ' ').trim();
+        document.getElementById('htmlResult').textContent = optimizedHTML;
+        document.getElementById('htmlOutput').style.display = 'block';
+        document.getElementById('htmlOutputTitle').style.display = 'block';
+        document.getElementById('htmlDownload').style.display = 'block';
+    }
+
     function downloadFile(type) {
         const content = document.getElementById(type + 'Result').textContent;
-        const blob = new Blob([content], { type: type === 'css' ? 'text/css' : 'application/javascript' });
+        const blob = new Blob([content], { type: type === 'css' ? 'text/css' : type === 'js' ? 'application/javascript' : 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = type === 'css' ? 'optimized.css' : 'optimized.js';
+        a.download = type === 'css' ? 'optimized.css' : type === 'js' ? 'optimized.js' : 'optimized.html';
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
