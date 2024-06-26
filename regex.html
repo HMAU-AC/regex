@@ -214,6 +214,13 @@
     </div>
 
     <script>
+    // PWA主题切换相关
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+  window.location.reload();
+});
+    
+    
+    // 正则表达式相关代码
         function escapeRegex(string) {
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\//g, '\\/');
         }
@@ -289,15 +296,7 @@
             }, 1000);
         }
 
-        // Detect dark mode and update theme color
-        function updateThemeColor() {
-            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const themeColor = document.getElementById('theme-color');
-               // Add event listener to detect changes in the color scheme
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeColor);
-
-    // Initial check
-    updateThemeColor();
+      
 </script>
 </body>
 </html>
