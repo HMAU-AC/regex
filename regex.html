@@ -106,45 +106,90 @@
             margin-right: 5px;
         }
 
-        body.dark-mode {
-            background-color: #121212;
-            color: #ffffff;
+        /* Light Mode (default) */
+        body {
+            background-color: #f0f0f0;
+            color: #000;
         }
 
-        .header.dark-mode {
-            background-color: #1e1e1e;
-            border-bottom-color: #333;
+        .header {
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ddd;
         }
 
-        .block.dark-mode {
-            background-color: #1e1e1e;
-            border-color: #333;
+        .block {
+            background-color: #fff;
+            border: 1px solid #ddd;
         }
 
-        .output.dark-mode {
-            background-color: #333;
+        .output {
+            background-color: #e8e8e8;
         }
 
-        .file-input.dark-mode {
-            background-color: #333;
-            color: #ffffff;
-            border-color: #555;
+        .file-input {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #ddd;
         }
 
-        .compress-btn.dark-mode, .download-btn.dark-mode {
-            background-color: #444;
+        .compress-btn, .download-btn {
+            background-color: #4CAF50;
         }
 
-        .compress-btn.dark-mode:hover, .download-btn.dark-mode:hover {
-            background-color: #555;
+        .compress-btn:hover, .download-btn:hover {
+            background-color: #45a049;
         }
 
-        .copy-button.dark-mode {
-            background-color: #555;
+        .copy-button {
+            background-color: #007aff;
         }
 
-        .copy-button.dark-mode:hover {
-            background-color: #666;
+        .copy-button:hover {
+            background-color: #005bb5;
+        }
+
+        /* Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #ffffff;
+            }
+
+            .header {
+                background-color: #1e1e1e;
+                border-bottom: 1px solid #333;
+            }
+
+            .block {
+                background-color: #1e1e1e;
+                border: 1px solid #333;
+            }
+
+            .output {
+                background-color: #333;
+            }
+
+            .file-input {
+                background-color: #333;
+                color: #ffffff;
+                border: 1px solid #555;
+            }
+
+            .compress-btn, .download-btn {
+                background-color: #444;
+            }
+
+            .compress-btn:hover, .download-btn:hover {
+                background-color: #555;
+            }
+
+            .copy-button {
+                background-color: #555;
+            }
+
+            .copy-button:hover {
+                background-color: #666;
+            }
         }
     </style>
 </head>
@@ -166,8 +211,6 @@
             </div>
         </div>
     </div>
-
-    <button id="themeToggleBtn" style="position: fixed; bottom: 10px; left: 10px; padding: 10px; background-color: #007aff; color: white; border: none; border-radius: 5px; cursor: pointer;">切换主题</button>
 
     <script>
         function escapeRegex(string) {
@@ -244,32 +287,6 @@
                 copyButton.textContent = '复制';
             }, 1000);
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const themeToggleBtn = document.getElementById('themeToggleBtn');
-            const themeColorMeta = document.getElementById('theme-color');
-
-            // 检查系统的暗黑模式
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.body.classList.add('dark-mode');
-                document.querySelectorAll('.header, .block, .output, .file-input, .compress-btn, .download-btn, .copy-button').forEach(element => {
-                    element.classList.add('dark-mode');
-                });
-                themeColorMeta.setAttribute('content', '#121212');
-            }
-
-            themeToggleBtn.addEventListener('click', function () {
-                document.body.classList.toggle('dark-mode');
-                document.querySelectorAll('.header, .block, .output, .file-input, .compress-btn, .download-btn, .copy-button').forEach(element => {                element.classList.toggle('dark-mode');
-            });
-
-            if (document.body.classList.contains('dark-mode')) {
-                themeColorMeta.setAttribute('content', '#121212');
-            } else {
-                themeColorMeta.setAttribute('content', '#f0f0f0');
-            }
-        });
-    });
-</script>
+    </script>
 </body>
 </html>
