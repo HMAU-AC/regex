@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="theme-color" content="#f0f0f0" id="theme-color">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>连接正则转换</title>
     <style>
         body {
@@ -287,6 +287,16 @@
                 copyButton.textContent = '复制';
             }, 1000);
         }
-    </script>
+
+        // Detect dark mode and update theme color
+        function updateThemeColor() {
+            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const themeColor = document.getElementById('theme-color');
+               // Add event listener to detect changes in the color scheme
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeColor);
+
+    // Initial check
+    updateThemeColor();
+</script>
 </body>
 </html>
