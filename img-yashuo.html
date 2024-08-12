@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#f0f0f0" id="theme-color">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优化压缩页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .content {
+            padding: 10px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .file-input {
+            width: calc(100% - 5px); /* 添加边距调整 */
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            box-sizing: border-box;
+        }
+        .compress-btn, .download-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .compress-btn:hover, .download-btn:hover {
+            background-color: #45a049;
+        }
+        .block {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+        .output {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8e8e8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 140px;
+            overflow-y: auto;
+        }
+        .comparison {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/compressorjs/1.0.7/compressor.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+</head>
+<body>
+
+<div class="content">
+    <!-- Existing sections for CSS, JS, and HTML optimization -->
+    <!-- ... existing code ... -->
+
+    <div class="block">
+        <div class="section">
+            <div class="section-title">图片压缩</div>
+            <input type="file" class="file-input" id="imageFileInput" accept="image/*" multiple>
+            <label for="quality">压缩等级 (0-1):</label>
+            <input type="number" id="quality" class="file-input" min="0" max="1" step="0.1" value="0.6">
+            <label for="width">宽度 (px):</label>
+            <input type="number" id="width" class="file-input" placeholder="自动">
+            <label for="height">高度 (px):</label>
+            <input type="number" id="height" class="file-input" placeholder="自动">
+            <label for="format">格式:</label>
+            <select id="format" class="file-input">
+                <option value="image/jpeg">JPEG</option>
+                <option value="image/png">PNG</option>
+                <option value="image/webp">WEBP</option>
+            </select>
+            <button class="compress-btn" onclick="optimizeImages()">压缩图片</button>
+            <h3 id="imageOutputTitle" style="display:none;">压缩后的图片:</h3>
+            <div class="output" id="imageOutput" style="display:none;">
+                <!-- 压缩后的图片将会显示在这里 -->
+            </div>
+            <div class="comparison" id="comparison" style="display:none;">
+                <!-- 压缩前后的差距百分比将会显示在这里 -->
+            </div>
+            <button class="download-btn" id="imageDownload" style="display:none;" onclick="downloadImages()">下载压缩后的图片</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let compressedImages = [];
+
+    function optimizeImages() {
+        const fileInput = document.getElementById('imageFileInput');
+        const quality = parseFloat(document.getElementById('quality').value);
+        const width = parseInt(document.getElementById('width').value, 10) || undefined;
+        const height = parseInt(document.getElementById('height').value, 10) || undefined;
+        const format = document.getElementById('format').value;
+        const files = fileInput.files;
+
+        if (files.length > 0) {
+            document.getElementById('imageOutput').innerHTML = ''; // 清空之前的输出
+            document.getElementById('comparison').innerHTML = ''; // 清空之前的比较结果
+            compressedImages = []; // 清空之前的压缩图像
+            Array.from(files).forEach(file => {
+                const originalSize = file.size;
+                new Compressor(file, {
+                    quality: quality,
+                    width: width,
+                    height: height,
+                    convertSize: Infinity, // 确保所有图像都被转换
+                    mimeType: format,
+                    success(result) {
+                        const compressedSize = result.size;
+                        const reduction = ((originalSize - compressedSize) / originalSize * 100).toFixed(2);
+                        const url = URL.createObjectURL(result);
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.style.maxWidth = '100%';
+                        document.getElementById('imageOutput').appendChild(img);
+                        document.getElementById('imageOutput').style.display = 'block';
+                        document.getElementById('imageOutputTitle').style.display = 'block';
+                        compressedImages.push({ blob: result, name: file.name });
+                        document.getElementById('imageDownload').style.display = 'block';
+
+                        const comparisonText = document.createElement('p');
+                        comparisonText.textContent = `文件: ${file.name}, 原始大小: ${(originalSize / 1024).toFixed(2)} KB, 压缩后大小: ${(compressedSize / 1024).toFixed(2)} KB, 减少: ${reduction}%`;
+                        document.getElementById('comparison').appendChild(comparisonText);
+                        document.getElementById('comparison').style.display = 'block';
+                    },
+                    error(err) {
+                        console.error(err.message);
+                    },
+                });
+            });
+        }
+    }
+
+    function downloadImages() {
+        if (compressedImages.length === 1) {
+            const image = compressedImages[0];
+            const url = URL.createObjectURL(image.blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = image.name;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } else if (compressedImages.length > 1) {
+            const zip = new JSZip();
+            compressedImages.forEach(image => {
+                zip.file(image.name, image.blob);
+            });
+            zip.generateAsync({ type: 'blob' }).then(content => {
+                const url = URL.createObjectURL(content);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'compressed_images.zip';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
